@@ -12,3 +12,16 @@
 #
 #- Crear un método que lea el archivo, lo abra y devuelva la cantidad de líneas que posee.
 
+
+
+def seelines(file_name)
+    lines = []
+    File.open(file_name, 'r') { |file| lines = file.readlines }
+    puts lines.count
+    #puts x
+end
+#def metodo
+#    'hola'
+#end
+
+seelines('movies.txt')

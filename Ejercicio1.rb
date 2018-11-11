@@ -14,6 +14,7 @@ def write2p (str1, str2)
     file = File.open(file_name,'w') #Se indica una ubicación relativa, dependiendo del lugar donde se ubique al correr el archivo.
     file << ("<p>"+ str1 + "</p>\n")
     file << ("<p>"+ str2 + "</p>\n")
+    return nil
 end
 
 def write_2p_1ol(str1, str2, array = ['1','2','3'])
@@ -28,6 +29,24 @@ def write_2p_1ol(str1, str2, array = ['1','2','3'])
         end
         file << ("</ol>\n")
     end
+    return nil
 end
+
+def html(str1, str2, color = 'black', array = ['1','2','3'])
+    file_name = "index3.html"
+    file = File.open(file_name, 'w')
+    file << ("<p style=\"color: #{color};\">"+ str1 + "</p>\n")
+    file << ("<p style=\"color: #{color};\">"+ str2 + "</p>\n")
+    unless array.empty?
+        file << ("<ol>\n")
+        array.each do |element|
+            file << ("  <li>" + element + "</li>\n")
+        end
+        file << ("</ol>\n")
+    end
+    return nil
+end
+
 write2p(parrafo1,parrafo2)
 write_2p_1ol(parrafo1,parrafo2)
+html(parrafo1,parrafo2,'red')

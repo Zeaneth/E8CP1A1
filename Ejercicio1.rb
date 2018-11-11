@@ -12,8 +12,22 @@ puts "Escribe dos párrafos"
 def write2p (str1, str2)
     file_name = "index.html"
     file = File.open(file_name,'w') #Se indica una ubicación relativa, dependiendo del lugar donde se ubique al correr el archivo.
-    file << (str1 + "\n")
-    file << (str2 + "\n")
+    file << ("<p>"+ str1 + "</p>\n")
+    file << ("<p>"+ str2 + "</p>\n")
 end
 
+def write_2p_1ol(str1, str2, array = ['1','2','3'])
+    file_name = "index2.html"
+    file = File.open(file_name, 'w')
+    file << ("<p>"+ str1 + "</p>\n")
+    file << ("<p>"+ str2 + "</p>\n")
+    unless array.empty?
+        file << ("<ol>\n")
+        array.each do |element|
+            file << ("  <li>" + element + "</li>\n")
+        end
+        file << ("</ol>\n")
+    end
+end
 write2p(parrafo1,parrafo2)
+write_2p_1ol(parrafo1,parrafo2)

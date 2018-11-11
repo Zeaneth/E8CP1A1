@@ -13,11 +13,11 @@ def read_word_counter (filename, word)
     contador += palabras.count
     # puts palabras.count
         if palabras.include? "#{word.to_s}"
-            word_counter += palabras.count "#{word.to_s}"    
+          word_counter += palabras.count "#{word.to_s}"    
         end
     end
     puts "El número de palabras del archivo '#{filename}' es #{contador}"
-    print "la palabra '#{word.to_s}' en el archivo '#{filename}' existe y tiene #{word_counter} repeticiones" 
+    print "la palabra '#{word.to_s}' en el archivo '#{filename}' existe y tiene #{word_counter} repeticiones\n" 
 end
 
 read_word_counter('movies.txt','Guerra')

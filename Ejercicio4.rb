@@ -62,15 +62,16 @@ def get_stock(file_name)
     stock = []
     file = File.open(file_name, 'r')
     file.readlines.each do |line|
-      product = {}
+    product = {}
       stock_unfinished_group = {}
       line = line.chomp.split(', ')
       product[:name] = line[0]
       stock_unfinished_group[:stock_unfinished] = line[1..line.length]
       product[:stock] = stock_unfinished_group[:stock_unfinished].map(&:to_i)
+      product[:stock_unfinished] = stock_unfinished_group[:stock_unfinished]
       stock.push(product)
     end
-    return stock
+    stock
 end
 
 
@@ -90,8 +91,7 @@ end
 
 # Opción 1: mostrar cantidad de existencias (submenú)
 def show_inventory(options)
-    puts 'Seleccionaste la opción 1'
-
+    puts 'Seleccionaste la opción 1. A continuación se mostrarán la opciones disponibles :)'
 end
 
 #Opción A - 1
@@ -114,13 +114,55 @@ def show_all_by_store(file_name)
 end
 
 #Opción C - 3 existencias totales en todas las tiendas
-def show_all_in_warehouse(file_name)
+def show_all_in_warehouses(file_name)
     stock_total = get_stock(file_name).map { |value| value[:stock].sum }.sum
     puts "El stock en bodegas es de #{stock_total} unidades"
 end
 
 # Opción 2:
-def stock_in_warehouse(file_name)
+def stock_of_product?(file_name)
+    puts 'Ha seleccionado revisar el stock de un producto. Escriba el nombre del producto:'
+    selected_product = gets.chomp
+    product_stock = 0
+    get_stock(file_name).map do |line| 
+        if line[:name] == selected_product
+            line[:stock].each do |value|
+                product_stock += value
+            end
+        # puts selected_product
+        end
+    end
+    if product_stock == 0
+        puts "El producto no está registrado, intente más tarde."
+    else 
+        puts "El producto #{selected_product} tiene un stock de #{product_stock} unidades"
+    end
+end
+
+# Opción 3: productos no registrados
+def search_non_registered(file_name)
+    warehouse = [[], [], []]
+    get_stock(file_name).each do |v|
+        warehouse.each_with_index do |_, i|
+          warehouse[i].push(v[:name]) if v[:stock_unfinished][i] == 'NR'
+        end
+    end
+    warehouse.each_with_index do |e, i|
+      puts "Los productos no registrados en la bodega #{i + 1} son:"
+      e.each do |v|
+        puts "  #{v}"
+      end
+    end
+end
+
+# Opción 4: productos con stock menor al indicado
+def search_stock_below(file_name)
+
+end
+
+# Opción 5: registrar un nuevo producto a bodega
+def add_new_product(file_name)
+
 end
 
 
@@ -131,6 +173,7 @@ def close_session
 end
 
 # 3. Procesar
+('inventory.txt')
 show(instructions)
 show_menu(options_menu)
 
@@ -148,7 +191,7 @@ while (option_selected != option_exit) do
             when 2
                 show_all_by_store('inventory.txt')
             when 3
-                show_all_in_warehouse('inventory.txt')
+                show_all_in_warehouses('inventory.txt')
             when 4
                 puts "Seleccionó la opción de cierre de submenú."
                 break
@@ -158,8 +201,10 @@ while (option_selected != option_exit) do
         show(options_menu)
         show(instructions_new)
     when 2
+        stock_of_product?('inventory.txt')
         show(instructions_new)
     when 3
+        search_non_registered('inventory.txt')
         show(instructions_new)
     when 4
         show(instructions_new)

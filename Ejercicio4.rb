@@ -126,6 +126,7 @@ def stock_of_product?(file_name)
     product_stock = 0
     get_stock(file_name).map do |line| 
         if line[:name] == selected_product
+            #get_total_by_product(line)
             line[:stock].each do |value|
                 product_stock += value
             end
@@ -165,9 +166,6 @@ def search_stock_below(file_name)
         if stock < selected_minimum
             puts "El producto #{line[:name]} tiene un stock de #{stock} unidades, menor al elegido de #{selected_minimum} unidades."
         end
-        # if stock < selected_minimum
-        #     puts "El #{line[:name]} tiene #{stock} unidades y cumple con la solicitud."
-        # end
     end
 end
 
@@ -182,7 +180,20 @@ end
 
 # Opción 5: registrar un nuevo producto a bodega
 def add_new_product(file_name)
-
+    puts 'Ha seleccionado ingresar un nuevo producto. Ingrese los datos solicitados:'
+    puts '¿Cuál es el nombre del producto?'
+    product_name = gets.chomp.to_s
+    puts '¿Cuál es su stock en bodega 1?'
+    stock_warehouse1 = gets.chomp.to_i
+    puts '¿Cuál es su stock en bodega 2?'
+    stock_warehouse2 = gets.chomp.to_i
+    puts '¿Cuál es su stock en bodega 3?'
+    stock_warehouse3 = gets.chomp.to_i
+    file = File.open(file_name, 'a')
+    file.puts "\n"
+    file.puts "#{product_name}, #{stock_warehouse1}, #{stock_warehouse2}, #{stock_warehouse3}"
+    file.close
+    puts "El producto #{product_name} ha sido registrado exitosamente."
 end
 
 # Opción 6: cerrar sesión
@@ -192,45 +203,47 @@ def close_session
 end
 
 # 3. Procesar
-search_stock_below('inventory.txt')
-# show(instructions)
-# show_menu(options_menu)
 
-# while (option_selected != option_exit) do
-#     option_selected = select_options(options_menu)
-#     case option_selected
-#     when 1
-#         show_inventory(options_submenu)
-#         show_menu(options_submenu)
-#         while (option_selected != option_exit) do
-#             option_selected = select_options(options_submenu)
-#             case option_selected
-#             when 1
-#                 show_all('inventory.txt')
-#             when 2
-#                 show_all_by_store('inventory.txt')
-#             when 3
-#                 show_all_in_warehouses('inventory.txt')
-#             when 4
-#                 puts "Seleccionó la opción de cierre de submenú."
-#                 break
-#             end
-#         end
-#         puts "Ha vuelto al menú principal."
-#         show(options_menu)
-#         show(instructions_new)
-#     when 2
-#         stock_of_product?('inventory.txt')
-#         show(instructions_new)
-#     when 3
-#         search_non_registered('inventory.txt')
-#         show(instructions_new)
-#     when 4
-#         show(instructions_new)
-#     when 5
-#         show(instructions_new)
-#     when option_exit
-#         close_session
-#         break
-#     end
-# end
+show(instructions)
+show_menu(options_menu)
+
+while (option_selected != option_exit) do
+    option_selected = select_options(options_menu)
+    case option_selected
+    when 1
+        show_inventory(options_submenu)
+        show_menu(options_submenu)
+        while (option_selected != option_exit) do
+            option_selected = select_options(options_submenu)
+            case option_selected
+            when 1
+                show_all('inventory.txt')
+            when 2
+                show_all_by_store('inventory.txt')
+            when 3
+                show_all_in_warehouses('inventory.txt')
+            when 4
+                puts "Seleccionó la opción de cierre de submenú."
+                break
+            end
+        end
+        puts "Ha vuelto al menú principal."
+        show(options_menu)
+        show(instructions_new)
+    when 2
+        stock_of_product?('inventory.txt')
+        show(instructions_new)
+    when 3
+        search_non_registered('inventory.txt')
+        show(instructions_new)
+    when 4
+        search_stock_below('inventory.txt')
+        show(instructions_new)
+    when 5
+        add_new_product('inventory.txt')
+        show(instructions_new)
+    when option_exit
+        close_session
+        break
+    end
+end

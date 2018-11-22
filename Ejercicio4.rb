@@ -157,14 +157,33 @@ end
 
 # Opción 4: productos con stock menor al indicado
 def search_stock_below(file_name)
-
+    puts 'Ha seleccionado revisar productos con stock menor a una cantidad específica. Escriba tal cantidad:'
+    selected_minimum = gets.chomp.to_i
+    stock = 0
+    get_stock(file_name).each do |line|
+        stock = get_total_by_product(line)
+        if stock < selected_minimum
+            puts "El producto #{line[:name]} tiene un stock de #{stock} unidades, menor al elegido de #{selected_minimum} unidades."
+        end
+        # if stock < selected_minimum
+        #     puts "El #{line[:name]} tiene #{stock} unidades y cumple con la solicitud."
+        # end
+    end
 end
+
+def get_total_by_product(line)
+    stock = 0
+    line[:stock].each do |value|
+        stock += value
+    end
+    stock
+end
+
 
 # Opción 5: registrar un nuevo producto a bodega
 def add_new_product(file_name)
 
 end
-
 
 # Opción 6: cerrar sesión
 def close_session
@@ -173,45 +192,45 @@ def close_session
 end
 
 # 3. Procesar
-('inventory.txt')
-show(instructions)
-show_menu(options_menu)
+search_stock_below('inventory.txt')
+# show(instructions)
+# show_menu(options_menu)
 
-while (option_selected != option_exit) do
-    option_selected = select_options(options_menu)
-    case option_selected
-    when 1
-        show_inventory(options_submenu)
-        show_menu(options_submenu)
-        while (option_selected != option_exit) do
-            option_selected = select_options(options_submenu)
-            case option_selected
-            when 1
-                show_all('inventory.txt')
-            when 2
-                show_all_by_store('inventory.txt')
-            when 3
-                show_all_in_warehouses('inventory.txt')
-            when 4
-                puts "Seleccionó la opción de cierre de submenú."
-                break
-            end
-        end
-        puts "Ha vuelto al menú principal."
-        show(options_menu)
-        show(instructions_new)
-    when 2
-        stock_of_product?('inventory.txt')
-        show(instructions_new)
-    when 3
-        search_non_registered('inventory.txt')
-        show(instructions_new)
-    when 4
-        show(instructions_new)
-    when 5
-        show(instructions_new)
-    when option_exit
-        close_session
-        break
-    end
-end
+# while (option_selected != option_exit) do
+#     option_selected = select_options(options_menu)
+#     case option_selected
+#     when 1
+#         show_inventory(options_submenu)
+#         show_menu(options_submenu)
+#         while (option_selected != option_exit) do
+#             option_selected = select_options(options_submenu)
+#             case option_selected
+#             when 1
+#                 show_all('inventory.txt')
+#             when 2
+#                 show_all_by_store('inventory.txt')
+#             when 3
+#                 show_all_in_warehouses('inventory.txt')
+#             when 4
+#                 puts "Seleccionó la opción de cierre de submenú."
+#                 break
+#             end
+#         end
+#         puts "Ha vuelto al menú principal."
+#         show(options_menu)
+#         show(instructions_new)
+#     when 2
+#         stock_of_product?('inventory.txt')
+#         show(instructions_new)
+#     when 3
+#         search_non_registered('inventory.txt')
+#         show(instructions_new)
+#     when 4
+#         show(instructions_new)
+#     when 5
+#         show(instructions_new)
+#     when option_exit
+#         close_session
+#         break
+#     end
+# end
